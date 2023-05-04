@@ -1,0 +1,31 @@
+---
+title: "Top 10 Latvian cities by population using plotly"
+output: html_document
+date: "2023-05-04"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(dplyr)
+library(plotly)
+```
+
+This document displays populations of top 10 cities in Latvia in a barchart using plotly.
+
+The data came from: [Latvia Cities Database](https://simplemaps.com/data/lv-cities) at simplemaps.com.
+
+```{r}
+df <- read.csv('cities_in_latvia.csv')
+head(df)
+```
+
+```{r}
+subdf <- head(select(df, city, population), 10)
+```
+
+```{r}
+plot_ly(x=subdf$city, y=subdf$population, type="bar")
+```
+
+
