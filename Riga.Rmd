@@ -1,0 +1,28 @@
+---
+title: "Cities in Latvia with their population sizes"
+output: html_document
+date: "4 May 2023"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(dplyr)
+library(leaflet)
+```
+
+This document displays cities in Latvia with circles representating their population sizes.
+
+The data came from: [Latvia Cities Database](https://simplemaps.com/data/lv-cities) at simplemaps.com.
+
+```{r, echo=FALSE}
+df <- read.csv('cities_in_latvia.csv')
+```
+
+```{r echo=FALSE}
+riga_map <- df %>%
+  leaflet() %>%
+  addTiles() %>%
+  addCircles(weight=1, lng=df$lng, lat=df$lat, label=df$admin_name, radius=sqrt(df$population_proper)*30)
+riga_map
+```  
