@@ -51,12 +51,12 @@ The sliders in the *Interactive Iris* applications have minimums and maximums ba
 
 The state of the art model used for predicting iris species was created using the advanced technology of the R language with a simple statement operating on the data:
 
-```{r}
+```{r echo=TRUE}
 model <- rpart(Species~., data=iris)
 ```
 
 With another simple instruction the model can be represented visually.
-```{r}
+```{r echo=TRUE}
 rpart.plot(model)
 ```
 
@@ -69,13 +69,12 @@ After selecting the *sepal* and *petal* parameters using the sliders, the *Resul
 
 Let's see what happens under the hood. Let's assume the following sepal and petal values, which in *Interactive Iris* you can set using sliders.
 
-```{r}
+```{r echo=TRUE}
 my_observations <- data.frame(Sepal.Length=5.8, Sepal.Width=3.0, Petal.Length=2.8, Petal.Width=1.2)
-my_observations
 ```
 
 The numerical outcome of the prediction using the *Interactive Iris* model is:
-```{r}
+```{r echo=TRUE}
 prediction <- predict(model, my_observations)
 prediction
 ```
