@@ -1,0 +1,98 @@
+---
+title: "Interactive Iris"
+author: "Cees Roele"
+date: "2023-05-04"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+data(iris)
+library(rpart)
+library(rpart.plot)
+library(RColorBrewer)
+```
+
+## Predicting Iris Species
+
+*Interactive Iris* is an online shiny application which allows flower-lovers & others to find the most likely species of iris by simply setting sepal/petal and length/width parameters using sliders. As there still may be some uncertainty, in addition to the most likely name, a barchart is displayed showing the probability of different species for the selected parameters.
+
+Besides displaying results in the *Result* tab, you will find a visual represention of the
+model in the *Decision Tree* tab. If in doubt, more information on the application and how to
+use it is available under the *Documentation* tab.
+
+
+```{r}
+knitr::include_graphics("interactive_iris.png")
+```
+
+## Data
+
+To make predictions a model is created using the famous *iris* dataset which is available by
+default in the R programmming language environment.
+
+In this dataset three species of iris are distinguished. They are mentioned below with the number
+of samples in the dataset for each of them.
+
+```{r}
+table(iris$Species)
+```
+
+For all samples four measurements were taken. These observations have the following characteristics:
+```{r}
+summary(iris)[c(1,3,6),1:4]
+```
+
+The sliders in the *Interactive Iris* applications have minimums and maximums based on the above data, but with an extra margin, as *in real life* one may encounter flowers beyond the observations in the dataset.
+
+
+## Decision Tree Model
+
+The state of the art model used for predicting iris species was created using the advanced technology of the R language with a simple statement operating on the data:
+
+```{r}
+model <- rpart(Species~., data=iris)
+```
+
+With another simple instruction the model can be represented visually.
+```{r}
+rpart.plot(model)
+```
+
+For your convenience, the above diagram is always available at your fingertips in the *Decision Tree* tab of the *Interactive Iris* application.
+
+
+## Understanding outcome
+
+After selecting the *sepal* and *petal* parameters using the sliders, the *Result* tab will display the most likely iris species for those values based on a prediction by its model.
+
+Let's see what happens under the hood. Let's assume the following sepal and petal values, which in *Interactive Iris* you can set using sliders.
+
+```{r}
+my_observations <- data.frame(Sepal.Length=5.8, Sepal.Width=3.0, Petal.Length=2.8, Petal.Width=1.2)
+my_observations
+```
+
+The numerical outcome of the prediction using the *Interactive Iris* model is:
+```{r}
+prediction <- predict(model, my_observations)
+prediction
+```
+
+As you see, this prediction result does not give a single species as outcome, but a likelihood 
+for each species. For your convenience the species with the highest score is shown in the result tab. 
+
+But as you also may want to understand uncertainty in the outcome, where several species may actually
+be a good outcome, an easy to read barchart will show what the probabilities per species are.
+
+```{r}
+barplot(prediction, main="Predicted species likelihood for selected parameters", ylab="Probability per species", col=brewer.pal(3, "Set2"))
+```
+
+We see in this example that *versicolor* is most likely, but that there is also a chance that *virginica* is the correct species for these observations.
+
+
+### That's all! Enjoy *Interactive Iris*!
+
+
